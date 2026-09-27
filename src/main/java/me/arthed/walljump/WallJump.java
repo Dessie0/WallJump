@@ -4,15 +4,11 @@ import me.arthed.walljump.api.WallJumpAPI;
 import me.arthed.walljump.command.WallJumpCommand;
 import me.arthed.walljump.config.WallJumpConfiguration;
 import me.arthed.walljump.handlers.BStats;
-import me.arthed.walljump.handlers.OtherPluginsHandler;
 import me.arthed.walljump.handlers.WorldGuardHandler;
 import me.arthed.walljump.listeners.*;
 import me.arthed.walljump.player.PlayerManager;
 import me.arthed.walljump.player.WPlayer;
-import me.arthed.walljump.utils.AntiCheatUtils;
-import me.arthed.walljump.utils.BukkitUtils;
 import me.arthed.walljump.utils.UpdateChecker;
-import me.vagdedes.spartan.api.API;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -60,8 +56,7 @@ public final class WallJump extends JavaPlugin {
                 new PlayerJoinListener(),
                 new PlayerQuitListener(),
                 new PlayerToggleSneakListener(),
-                new PlayerDamageListener(),
-                new OtherPluginsHandler()
+                new PlayerDamageListener()
         );
 
         this.getCommand("walljump").setExecutor(new WallJumpCommand());
@@ -76,9 +71,7 @@ public final class WallJump extends JavaPlugin {
         UpdateChecker updateChecker = new UpdateChecker(this);
         if(!config.getBoolean("ignoreUpdates"))
             updateChecker.checkUpdates();
-
-        new AntiCheatUtils();
-
+        
         api = new WallJumpAPI();
     }
 

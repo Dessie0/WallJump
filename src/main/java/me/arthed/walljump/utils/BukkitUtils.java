@@ -52,7 +52,14 @@ public class BukkitUtils {
         V1_14(14),
         V1_15(15),
         V1_16(16),
-        V1_17(17);
+        V1_17(17),
+        V1_18(18),
+        V1_19(19),
+        V1_20(20),
+        V1_21(21),
+        V26_1(26),
+        V26_2(26),
+        V26_3(26);
 
         public final int versionInt;
 

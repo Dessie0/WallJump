@@ -81,7 +81,6 @@ public class NmsUtils {
         try {
             Object nmsWorld = block.getWorld().getClass().getMethod("getHandle").invoke(block.getWorld());
 
-
             Object blockPosition = getNmsClass("BlockPosition", "net.minecraft.core.BlockPosition")
                     .getConstructor(double.class, double.class, double.class)
                     .newInstance(block.getX(), block.getY(), block.getZ());
@@ -98,6 +97,7 @@ public class NmsUtils {
                 String soundString = (String) stepSound.getClass().getMethod(fieldName).invoke(stepSound);
                 return Sound.valueOf(soundString.toUpperCase().replace(".", "_"));
             }
+
             Field stepSoundField = null;
             String stepSoundFieldName = "stepSound";
             if(BukkitUtils.isVersionAfter(Version.V1_17))
@@ -136,9 +136,8 @@ public class NmsUtils {
             String key = (String) nmsKey.getClass().getMethod(getKeyMethodName).invoke(nmsKey);
 
             return Sound.valueOf(key.replace(".", "_").toUpperCase());
-        } catch (Exception ignore) {
-            ignore.printStackTrace();
-        }
+        } catch (Exception ignore) {}
+
         return Sound.BLOCK_STONE_PLACE;
     }
 

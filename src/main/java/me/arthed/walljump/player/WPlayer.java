@@ -21,10 +21,11 @@ public class WPlayer {
     private boolean wallJumping;
     private boolean onWall;
     private boolean sliding;
-
+    private boolean slide;
+    private double slideTime;
+    private int remainingJumps = -1;
     private WallFace lastFacing;
     private Location lastJumpLocation;
-    private int remainingJumps = -1;
 
     private BukkitTask velocityTask;
     private BukkitTask fallTask;
@@ -59,9 +60,6 @@ public class WPlayer {
         if(remainingJumps > 0)
             remainingJumps--;
 
-        //Stop some anti cheat checks that might be caused by wall-jumping
-        AntiCheatUtils.stopPotentialAntiCheatChecks(player);
-
         //play sound and spawn particles
         EffectUtils.playWallJumpSound(player, lastFacing, 0.3f, 1.2f);
         EffectUtils.spawnSlidingParticles(player, 5, lastFacing);
@@ -85,7 +83,10 @@ public class WPlayer {
                     }
                     if (lastJumpLocation.getY() - player.getLocation().getY() >= 1.2) {
                         lastJumpLocation = player.getLocation();
-                        EffectUtils.playWallJumpSound(player, lastFacing, 0.2f, 0.6f);
+
+                        Bukkit.getScheduler().runTask(WallJump.getInstance(), () -> {
+                            EffectUtils.playWallJumpSound(player, lastFacing, 0.2f, 0.6f);
+                        });
                     }
                 }
             }
@@ -117,11 +118,8 @@ public class WPlayer {
     }
 
     public void onWallJumpEnd(boolean jump) {
-        AntiCheatUtils.restartPotentialAntiCheatChecks(player);
-
         onWall = false;
         sliding = false;
-
 
         //allow the player to move again
         player.setFallDistance(0);
@@ -223,4 +221,27 @@ public class WPlayer {
         return player;
     }
 
+    public boolean isSlide() {
+        return slide;
+    }
+
+    public void setSlide(boolean slide) {
+        this.slide = slide;
+    }
+
+    public double getSlideTime() {
+        return slideTime;
+    }
+
+    public void setSlideTime(double slideTime) {
+        this.slideTime = slideTime;
+    }
+
+    public int getRemainingJumps() {
+        return remainingJumps;
+    }
+
+    public void setRemainingJumps(int remainingJumps) {
+        this.remainingJumps = remainingJumps;
+    }
 }
